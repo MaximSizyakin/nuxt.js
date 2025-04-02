@@ -3,7 +3,7 @@ export default defineNuxtPlugin({
   parallel: true,
   async setup() {
     const appFetch = $fetch.create({
-      baseURL: 'ocalhost:3001/',
+      baseURL: 'http://localhost:3001/',
       onRequest({options}) {
         options.headers.append('Accept', 'application/json')
       },
