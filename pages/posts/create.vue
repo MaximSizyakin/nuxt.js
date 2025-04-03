@@ -1,11 +1,11 @@
 <template>
   <div>
     <form>
-      <input type="text" v-model="post.url">
+      Url <input type="text" v-model="post.url">
       <br>
-      <input type="text" v-model="post.title">
+      Title <input type="text" v-model="post.title">
       <br>
-      <input type="text" v-model="post.content">
+      Content <input type="text" v-model="post.content">
       <br>
       <button @click.prevent="handleForm">Submit</button>
     </form>
@@ -13,11 +13,20 @@
 </template>
 
 <script setup lang="ts">
+import {string} from "postcss-selector-parser";
+
 const post = reactive({
   url: '',
   title: '',
   content: ''
 })
+
+const userAuthToken = ref('')
+onMounted(() => {
+  userAuthToken.value = localStorage.getItem("token") || '';
+  console.log(userAuthToken.value)
+})
+
 
 const handleForm = async function () {
   try {
@@ -27,6 +36,9 @@ const handleForm = async function () {
         "url": post.url,
         "title": post.title,
         "content": post.content
+      },
+      headers: {
+        "Authorization": 'Bearer ' + userAuthToken.value
       }
     })
     console.log(response)
@@ -34,7 +46,5 @@ const handleForm = async function () {
     console.log(e)
   }
 }
-
-
 </script>
 
