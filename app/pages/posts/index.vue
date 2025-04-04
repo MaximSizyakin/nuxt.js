@@ -11,6 +11,4 @@
 
 <script setup lang="ts">
 const {data} = await useAppFetch('posts')
-console.log(data)
-
 </script>
