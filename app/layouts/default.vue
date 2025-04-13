@@ -1,15 +1,22 @@
 <template>
-  <div>
-    <slot/>
-  </div>
+  <header>
+    Header
+  </header>
+  <hr>
+  <nav>
+    <NuxtLink to="/">Home</NuxtLink> |
+    <NuxtLink to="/posts">Blog</NuxtLink> |
+    <NuxtLink to="/posts/create">Create post</NuxtLink> |
+    <NuxtLink to="/auth/login">Login</NuxtLink>
+  </nav>
+  <hr>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <hr>
+    Footer
+  </footer>
 </template>
-
-<script>
-export default {
-  name: "default"
-};
+<script setup lang="ts">
 </script>
-
-<style scoped>
-
-</style>

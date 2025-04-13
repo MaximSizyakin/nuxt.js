@@ -1,14 +1,17 @@
 <template>
-  <h1>Posts page</h1>
+  <h1>Blog</h1>
   <ul v-if="data">
-    <li v-for="product in data">
-      <NuxtLink :to="`/posts/${product.id}`">{{ product.title }}</NuxtLink>
+    <li v-for="post in data">
+      <NuxtLink :to="`/posts/${post.id}`">{{ post.title }}</NuxtLink>
+    </li>
+    <li>
+      <NuxtLink :to="`/posts/0`">Wrong Sample</NuxtLink>
     </li>
   </ul>
-  <h2 v-else>Error</h2>
-  <NuxtLink :to="`/posts/create`">Create post</NuxtLink>
 </template>
 
 <script setup lang="ts">
-const {data} = await useAppFetch('posts')
+
+const {data, error} = await useAsyncData(() => useNuxtApp().$api.posts.all())
+
 </script>

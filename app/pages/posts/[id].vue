@@ -1,46 +1,34 @@
 <template>
   <div>
-    Post ID - {{ id }}
+    <h1>{{ post.title }}</h1>
   </div>
-  <div>
-    Post data:
-    <br>
-    URL: {{ postData.url }}
-    <br>
-    TITLE: {{ postData.title }}
-    <br>
-    CONTENT: {{ postData.content }}
-    <br>
-    USER: {{ postData.user.id }} - {{ postData.user.login }}
-    <hr>
-    {{ data }}
+  <div v-if="comments.data.value">
+    <h2>Comment</h2>
+    <pre>
+        {{ comments.data }}
+      </pre>
+  </div>
+  <div v-if="images.data.value">
+    <h2>Images</h2>
+    <pre>
+        {{ images.data }}
+      </pre>
   </div>
   <NuxtLink :to="`/posts`">Back to post</NuxtLink>
 </template>
 
 <script setup lang="ts">
+import type {Post} from "~/repository/posts";
+
 const {params} = useRoute()
 const id = params.id as string
 
-const postData = reactive({
-  "url": '',
-  "title": '',
-  "content": '',
-  user: {
-    "id": '',
-    "login": ''
-  }
-})
+const post = await useNaiveFetch<Post>(`posts/${id}`)
 
-const {data} = await useAppFetch("posts/" + id)
-
-onMounted(() => {
-  postData.url = data.value.url
-  postData.title = data.value.title
-  postData.content = data.value.content
-  postData.user.id = data.value.User.id
-  postData.user.login = data.value.User.login
-})
+const [comments, images] = await Promise.all([
+  useAppFetch<any>(`/comments/post/${post.value.id}`),
+  useAppFetch<any>(`/images/post/${post.value.id}`)
+])
 </script>
 
 

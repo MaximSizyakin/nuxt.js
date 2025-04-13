@@ -1,37 +1,26 @@
 <template>
   <div>
     <form>
-      Login <input type="text" v-model="user.login">
+      Login <input type="text" v-model="form.login">
       <br>
-      Password <input type="text" v-model="user.password">
+      Password <input type="text" v-model="form.password">
       <br>
       <button @click.prevent="handleForm">Submit</button>
     </form>
   </div>
-  <div>
-    <p>Token: {{ user.token }}</p>
-  </div>
 </template>
 
 <script setup lang="ts">
-const user = reactive({
+const form = reactive({
   login: 'admin',
   password: 'password',
-  token: ''
 })
 
-const handleForm = async function () {
+async function handleForm() {
   try {
-    const response = await $fetch('http://localhost:3001/auth/login', {
-      method: 'POST',
-      body: {
-        "login": user.login,
-        "password": user.password,
-      }
-    })
-    console.log(response.token)
-    user.token = response.token
-    localStorage.setItem('token', user.token)
+    const response = await useNuxtApp().$api.auth.login(form)
+    localStorage.setItem('AUTH', response.token)
+    document.location = '/'
   } catch (e) {
     console.log(e)
   }
